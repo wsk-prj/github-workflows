@@ -5,6 +5,30 @@ on:
     types: [opened]
 
 jobs: 
+  # assignee 등록
+  assign-author:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write # 이슈에 assignee 수정 권한
+
+    steps:
+      - name: Assign issue author
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const issueNumber = context.issue.number;
+            const issueAuthor = context.issue.user.login;
+
+            console.log(`Assigning @${issueAuthor} to issue#${issueNumber}`);
+
+            await github.rest.issues.addAssignees({
+              ...context.repo,
+              issue_number: issueNumber,
+              assignees: [issueNumber]
+            });
+  
+
+  # 브랜치 생성
   create-branch:
     runs-on: ubuntu-latest
     permissions:
