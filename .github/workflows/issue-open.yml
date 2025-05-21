@@ -166,7 +166,7 @@ jobs:
             await github.rest.pulls.create({
               owner,
               repo,
-              title: `issueTitle (#${issueNumber})`,
+              title: `${issueTitle} #${issueNumber}`,
               head: targetBranch,
               base: 'develop',
               body: `Closes #${issueNumber}`,
