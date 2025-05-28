@@ -30,6 +30,9 @@ jobs:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
           GITHUB_REF_NAME: ${{ github.ref_name }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
       # 4. Docker 이미지 푸시
       - name: Docker push
