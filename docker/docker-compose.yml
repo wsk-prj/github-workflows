@@ -8,11 +8,11 @@ services:
       dockerfile: Dockerfile
     container_name: ${APP_NAME}
     depends_on:
-      - ${APP_NAME}-db
+      - postgresql
     env_file:
       - .env
     networks:
-      - ${APP_NAME}-net
+      - app-net
     ports:
       - '3000:3000'
     restart: unless-stopped
@@ -24,17 +24,17 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-    volumes:
-      - ${APP_NAME}-data:/var/lib/postgresql/data
+    networks:
+      - app-net
     ports:
       - '5432:5432'
-    networks:
-      - ${APP_NAME}-net
+    volumes:
+      - app-data:/var/lib/postgresql/data
     restart: unless-stopped
 
 networks:
-  ${APP_NAME}-net:
+  app-net:
     driver: bridge
 
 volumes:
-  ${APP_NAME}-data:
+  app-data:
