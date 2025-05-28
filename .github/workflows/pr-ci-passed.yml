@@ -1,0 +1,102 @@
+name: CI passed actions
+
+on:
+  workflow_run:
+    workflows: ["CI - develop"]
+    types:
+      - completed
+
+jobs:
+  auto-merge:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      contents: write
+
+    steps:
+      - name: Auto merge successful PR
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const run = context.payload.workflow_run;
+
+            // PR 정보 가져오기
+            const { data: prs } = await github.rest.pulls.list({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              head: run.head_branch
+            });
+
+            const pr = prs.find(p => p.head.sha === run.head_sha);
+            if (!pr) {
+              console.log('❌ Matching PR not found.');
+              return;
+            }
+
+            const prNumber = pr.number;
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+
+            // 머지 가능 여부 확인
+            const { data: prInfo } = await github.rest.pulls.get({
+              owner,
+              repo,
+              pull_number: prNumber
+            });
+
+            if (prInfo.mergeable_state !== 'clean') {
+              console.log(`❌ PR not mergeable: ${prInfo.mergeable_state}`);
+              return;
+            }
+
+            // 관련 이슈 목록 추출
+            const regex = /(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)/gi;
+            const issueMatches = pr.body?.match(regex) || [];
+            const issueNumbers = issueMatches.map(m => m.match(/#(\d+)/)?.[1]).filter(Boolean);
+            const issueRefs = issueNumbers.map(n => `#${n}`);
+
+            // 커밋 목록 조회
+            const commits = await github.paginate(
+              github.rest.pulls.listCommits,
+              { owner, repo, pull_number: prNumber }
+            );
+
+            // co-author 목록 추출
+            const coAuthors = new Set();
+            for (const commit of commits) {
+              const name = commit.commit.author?.name;
+              const email = commit.commit.author?.email;
+              if (name && email) {
+                coAuthors.add(`Co-authored-by: ${name} <${email}>`);
+              }
+
+              const matches = commit.commit.message.match(/Co-authored-by:\s+.+<.+>/gi);
+              if (matches) {
+                for (const match of matches) {
+                  coAuthors.add(match.trim());
+                }
+              }
+            }
+
+            // 커밋 메시지 작성
+            const commitTitle = `${pr.title} (#${pr.number})`;
+            const commitBody = [
+              `Auto-merged after successful CI.`,
+              issueRefs.length ? `Related to - ${issueRefs.join(', ')}` : '',
+              '---',
+              ...coAuthors
+            ].join('\n').trim();
+
+            // Squash Merge
+            await github.rest.pulls.merge({
+              owner,
+              repo,
+              pull_number: prNumber,
+              merge_method: 'squash',
+              commit_title: commitTitle,
+              commit_message: commitBody
+            });
+
+            console.log(`✅ Squash merged PR #${prNumber} after CI success.`);
