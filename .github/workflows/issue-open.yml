@@ -105,6 +105,7 @@ jobs:
               force: false,
             });
 
+  # 풀 리퀘스트 생성
   create-pull-request:
     needs: create-branch
     runs-on: ubuntu-latest
@@ -125,7 +126,7 @@ jobs:
             await github.rest.pulls.create({
               owner,
               repo,
-              title: `${issueTitle} #${issueNumber}`,
+              title: `${issueTitle}`,
               head: targetBranch,
               base: 'develop',
               body: `Closes #${issueNumber}`,
