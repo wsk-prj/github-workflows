@@ -1,3 +1,9 @@
+# 이슈 작성 이후 스크립트
+# log-context: 디버깅용
+# assign-author: 이슈 작성자를 assignee 할당
+# create-branch: 이슈와 관련된 브랜치 생성(issue/{issue-number})
+# create-pull-request: 이슈와 관련된 풀 리퀘스트 생성(draft 상태)
+
 name: Issue open actions
 
 on:
