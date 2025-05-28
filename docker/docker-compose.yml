@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: ${DOCKERHUB_USERNAME}/${APP_NAME}:${GITHUB_REF_NAME}
+    image: ${DOCKERHUB_USERNAME}/${APP_NAME}:${GITHUB_HEAD_REF}
     build:
       context: .
       dockerfile: Dockerfile
