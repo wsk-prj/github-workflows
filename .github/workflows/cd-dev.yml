@@ -20,7 +20,7 @@ jobs:
 
       # 2. 최신 이미지 pull
       - name: Pull image
-        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}
+        run: docker pull ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:dev
 
       # 3. 기존 컨테이너 종료 및 제거
       - name: Stop and remove existing container
@@ -34,7 +34,7 @@ jobs:
           docker run -d \
             --name ${{ github.event.repository.name }} \
             -p ${{ secrets.DOCKER_PORT_DEV }}:3000 \
-            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:${{ github.ref_name }}
+            ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:dev
 
       # 5. 안 쓰는 이미지 정리
       - name: Prune unused images
