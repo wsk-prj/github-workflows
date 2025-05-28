@@ -68,7 +68,8 @@ jobs:
             }
 
             // 관련 이슈 목록 추출
-            const issueMatches = pr.body?.match(/(?:close[sd]?|fix(?:e[sd])?|resolve[sd]?)\s+#(\d+)/gi) || [];
+            const regex = /(?:close|closes|closed|fix|fixes|fixed|resolve|resolves|resolved)\s+#(\d+)/gi;
+            const issueMatches = pr.body?.match(regex) || [];
             const issueNumbers = issueMatches.map(match => match.match(/#(\d+)/)?.[1]).filter(Boolean);
             const issueRefs = issueNumbers.map(num => `#${num}`);
 
