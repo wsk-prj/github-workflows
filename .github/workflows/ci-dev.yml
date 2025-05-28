@@ -2,12 +2,12 @@ name: CI - develop
 
 on:
   pull_request:
-    branches: ['develop']
+    branches: ["develop"]
     paths:
-      - '.github/workflows/ci-dev.yml'
-      - 'src/**'
-      - 'Dockerfile'
-      - 'docker/docker-compose.yml'
+      - ".github/workflows/ci-dev.yml"
+      - "src/**"
+      - "Dockerfile"
+      - "docker/docker-compose.yml"
   workflow_dispatch:
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
 
       # 3. docker-compose 빌드
       - name: Docker Compose Build
-        run: docker-compose -f docker/docker-compose.yml build
+        run: docker-compose -f docker/docker-compose.dev.yml build
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
