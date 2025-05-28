@@ -1,0 +1,47 @@
+name: Pull request merged actions
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  # 테스트: context 출력
+  log-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Console log context
+        uses: actions/github-script@v7
+        with:
+          script: console.log(JSON.stringify(context, null, 2));
+
+  # 병합된 브랜치 삭제
+  delete-merged-branch:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Delete merged branch
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const targetBranch = context.payload.pull_request.head.ref;
+
+            // 보호된 브랜치는 무시 (예: main, develop)
+            if (['main', 'develop'].includes(targetBranch)) {
+              console.log(`Branch ${targetBranch} is protected. Skipping delete.`);
+              return;
+            }
+
+            // 브랜치 제거
+            await github.rest.git.deleteRef({
+              owner,
+              repo,
+              ref: `heads/${targetBranch}`
+            });
+
+            console.log(`Deleted merged branch: ${targetBranch}`);
