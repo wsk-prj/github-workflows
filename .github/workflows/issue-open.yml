@@ -1,12 +1,12 @@
-name: Isuse open actions
+name: Issue open actions
 
 on:
   issues:
     types: [opened]
 
-jobs: 
-  # context 출력
-  log-context: 
+jobs:
+  # 테스트: context 출력
+  log-context:
     runs-on: ubuntu-latest
 
     steps:
@@ -36,7 +36,6 @@ jobs:
               issue_number: issueNumber,
               assignees: [issueAuthor]
             });
-  
 
   # 브랜치 생성
   create-branch:

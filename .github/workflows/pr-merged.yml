@@ -15,7 +15,48 @@ jobs:
         with:
           script: console.log(JSON.stringify(context, null, 2));
 
-  # 병합된 브랜치 삭제
+  # 관련된 이슈 닫기(close, fix, resolve)
+  close-related-issues:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+
+    steps:
+      - name: Close related issues in PR body
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+            const regex = new RegExp(
+              [
+                '\\b(?:',                     // 단어 경계
+                'close|closes|closed',
+                '|fix|fixes|fixed',
+                '|resolve|resolves|resolved',
+                ')\\b',                       // 단어 경계
+                '\\s+#(\\d+)'                 // 공백 후 #이슈번호
+              ].join(''),
+              'gi'                            // 대소문자 무시, 전역
+            );
+
+            const issueNumbers = [...prBody.matchAll(regex)].map(match => match[1]);
+
+            if (issueNumbers.length === 0) {
+              console.log('No linked issues found in PR body.');
+              return;
+            }
+
+            // 해당되는 모든 이슈 닫기
+            for (const number of issueNumbers) {
+              console.log(`Closing issue #${number}`);
+              await github.rest.issues.update({
+                ...context.repo,
+                issue_number: number,
+                state: 'closed'
+              });
+            }
+
+  # 병합이 완료된 브랜치 삭제
   delete-merged-branch:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
