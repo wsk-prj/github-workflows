@@ -1,0 +1,19 @@
+name: Assign issue author
+
+runs:
+  using: composite
+  steps:
+    - name: Assign issue author
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issueNumber = context.payload.issue.number;
+          const issueAuthor = context.payload.issue.user.login;
+
+          console.log(`Assigning @${issueAuthor} to issue#${issueNumber}`);
+
+          await github.rest.issues.addAssignees({
+            ...context.repo,
+            issue_number: issueNumber,
+            assignees: [issueAuthor]
+          });

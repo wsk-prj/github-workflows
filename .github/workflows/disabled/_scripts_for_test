@@ -1,0 +1,10 @@
+jobs:
+  # 테스트: context 출력
+  log-context:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Console log context
+        uses: actions/github-script@v7
+        with:
+          script: console.log(JSON.stringify(context, null, 2));

@@ -1,0 +1,24 @@
+name: Create pull request
+
+runs:
+  using: composite
+  steps:
+    - name: Create pull request
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const issueNumber = context.payload.issue.number;
+          const issueTitle = context.payload.issue.title;
+          const targetBranch = `issue/${issueNumber}`;
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+
+          await github.rest.pulls.create({
+            owner,
+            repo,
+            title: `${issueTitle}`,
+            head: targetBranch,
+            base: 'develop',
+            body: `Closes #${issueNumber}`,
+            draft: true
+          });
