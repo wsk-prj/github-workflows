@@ -6,18 +6,13 @@ on:
     types: [closed]
 
 jobs:
-  # 체크아웃
-  checkout:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
   # 관련된 이슈 닫기(close, fix, resolve)
   close-related-issues:
     runs-on: ubuntu-latest
     permissions:
       issues: write
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/close-related-issues
 
   # 병합이 완료된 브랜치 삭제
@@ -27,4 +22,5 @@ jobs:
     permissions:
       contents: write
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/actions/delete-merged-branch
