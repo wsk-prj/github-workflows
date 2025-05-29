@@ -32,4 +32,4 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/create-pull-request
+      - uses: ./.github/actions/create-pr
