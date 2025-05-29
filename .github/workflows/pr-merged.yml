@@ -6,6 +6,12 @@ on:
     types: [closed]
 
 jobs:
+  # 체크아웃
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
   # 관련된 이슈 닫기(close, fix, resolve)
   close-related-issues:
     runs-on: ubuntu-latest
