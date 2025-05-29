@@ -49,7 +49,7 @@ jobs:
               console.log('❌ PR is still in a draft state. Skipping merge.');
               return;
             }
-
+            
             const prNumber = pr.number;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
