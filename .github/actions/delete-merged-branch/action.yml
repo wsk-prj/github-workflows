@@ -11,8 +11,9 @@ runs:
           const repo = context.repo.repo;
           const targetBranch = context.payload.pull_request.head.ref;
 
-          // 보호된 브랜치는 무시 (예: main, develop)
-          if (['main', 'develop'].includes(targetBranch)) {
+          // main, develop 브랜치는 무시
+          const protectedBranches = ['main', 'develop'];
+          if (protectedBranches.includes(targetBranch)) {
             console.log(`Branch ${targetBranch} is protected. Skipping delete.`);
             return;
           }
