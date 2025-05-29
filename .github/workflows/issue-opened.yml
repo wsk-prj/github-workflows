@@ -6,6 +6,12 @@ on:
     types: [opened]
 
 jobs:
+  # 체크아웃
+  checkout:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
   # assignee 등록
   assign-author:
     runs-on: ubuntu-latest
