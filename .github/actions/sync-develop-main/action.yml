@@ -14,7 +14,7 @@ runs:
       run: |
         git fetch origin develop
         git checkout develop
-        git merge --no-ff origin/main -m "Merge PR #${{ inputs.pr_number }} from main"
+        git merge --no-ff origin/main -m "Sync develop with main (align HEAD after #${{ inputs.pr_number }})"
 
     - name: Push to develop
       shell: bash
