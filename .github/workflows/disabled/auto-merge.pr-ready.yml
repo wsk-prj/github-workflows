@@ -1,7 +1,7 @@
 # PR 준비 이후 스크립트(draft 해제)
 # auto-merge: CI가 통과되었으면 해당 PR을 자동 병합(Squash Merge)
 
-name: Pull request ready for review actions
+name: Auto merge after CI and PR ready for review
 
 on:
   pull_request:
