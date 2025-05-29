@@ -1,3 +1,6 @@
+# CI 통과 이후 스크립트
+# auto-merge: CI가 완료되었고, Draft 상태가 아니면 해당 PR을 자동으로 병합(Squash Merge)
+
 name: CI passed actions
 
 on:
@@ -35,6 +38,18 @@ jobs:
               return;
             }
 
+            // 이미 병합되었는지 확인
+            if (pr.merged) {
+              console.log('ℹ️ PR already merged. Skipping.');
+              return;
+            }
+
+            // PR이 Draft 상태인지 확인
+            if (pr.draft) {
+              console.log('❌ PR is still in a draft state. Skipping merge.');
+              return;
+            }
+            
             const prNumber = pr.number;
             const owner = context.repo.owner;
             const repo = context.repo.repo;
