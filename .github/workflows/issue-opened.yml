@@ -18,8 +18,8 @@ jobs:
     permissions:
       issues: write
     steps:
-      - name: Assign issue author
-        uses: ./.github/actions/assign-author/action.yml
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/assign-author/action.yml
 
   # 브랜치 생성
   create-branch:
@@ -27,8 +27,8 @@ jobs:
     permissions:
       contents: write
     steps:
-      - name: Create branch
-        uses: ./.github/actions/create-branch/action.yml
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/create-branch/action.yml
 
   # 풀 리퀘스트 생성
   create-pull-request:
@@ -37,5 +37,5 @@ jobs:
       contents: write
       pull-requests: write
     steps:
-      - name: Create draft pull request
-        uses: ./.github/actions/create-pull-request/action.yml
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/create-pull-request/action.yml
