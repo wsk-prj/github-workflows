@@ -6,12 +6,6 @@ on:
     types: [opened]
 
 jobs:
-  # 체크아웃
-  checkout:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
   # assignee 등록
   assign-author:
     runs-on: ubuntu-latest
@@ -19,7 +13,7 @@ jobs:
       issues: write
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/assign-author/action.yml
+      - uses: ./.github/actions/assign-author
 
   # 브랜치 생성
   create-branch:
@@ -28,7 +22,7 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/create-branch/action.yml
+      - uses: ./.github/actions/create-branch
 
   # 풀 리퀘스트 생성
   create-pull-request:
@@ -38,4 +32,4 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/create-pull-request/action.yml
+      - uses: ./.github/actions/create-pull-request
