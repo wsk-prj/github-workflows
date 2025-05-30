@@ -1,5 +1,8 @@
 name: Assign issue author
 
+permissions:
+  issues: write
+
 runs:
   using: composite
   steps:

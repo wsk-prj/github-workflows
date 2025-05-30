@@ -1,5 +1,8 @@
 name: Create branch from issue
 
+permissions:
+  contents: write
+
 inputs:
   branch-prefix:
     description: 'Branch prefix (e.g., issue, feat, fix)'

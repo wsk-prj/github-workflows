@@ -9,8 +9,6 @@ jobs:
   # assignee 등록
   assign-author:
     runs-on: ubuntu-latest
-    permissions:
-      issues: write
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/assign-author
@@ -18,25 +16,17 @@ jobs:
   # 브랜치 생성
   create-branch:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      issues: write
     outputs:
       branch-name: ${{ steps.create-branch.outputs.branch-name }}
     steps:
       - uses: actions/checkout@v4
       - id: create-branch
         uses: ./.github/actions/create-branch
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   # 풀 리퀘스트 생성
   create-pull-request:
     needs: create-branch
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/create-pr
