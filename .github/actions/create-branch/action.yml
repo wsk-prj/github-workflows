@@ -5,6 +5,9 @@ inputs:
     description: 'Branch prefix (e.g., issue, feat, fix)'
     required: true
     default: 'issue'
+  github-token:
+    description: 'GitHub token'
+    required: true
 
 outputs:
   branch-name:
@@ -18,6 +21,7 @@ runs:
       id: create-branch
       uses: actions/github-script@v7
       with:
+        github-token: ${{ inputs.github-token }}
         script: |
           const issueNumber = context.payload.issue.number;
           const issueAuthor = context.payload.issue.user.login;

@@ -31,6 +31,8 @@ jobs:
       - uses: actions/checkout@v4
       - id: create-branch
         uses: ./.github/actions/create-branch
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
 
   # 풀 리퀘스트 생성
   create-pull-request:
@@ -43,4 +45,5 @@ jobs:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/create-pr
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           branch-name: ${{ needs.create-branch.outputs.branch-name }}
