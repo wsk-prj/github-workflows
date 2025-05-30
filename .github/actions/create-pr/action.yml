@@ -44,8 +44,18 @@ runs:
             issue_number: pr.data.number,
             assignees: [issueAuthor]
           });
-
-          // 봇 코멘트 작성
+          
+          // 봇 코멘트 작성(이슈)
+          console.log(`💬 Adding bot comment to issue #${issueNumber}`);
+          const branchUrl = `https://github.com/${owner}/${repo}/tree/${targetBranch}`;
+          await github.rest.issues.createComment({
+            owner,
+            repo,
+            issue_number: issueNumber,
+            body: `Created branch [${targetBranch}](${branchUrl}) for this issue and assigned to @${issueAuthor}`
+          });
+          
+          // 봇 코멘트 작성(PR)
           console.log(`💬 Adding bot comment to PR #${pr.data.number}`);
           await github.rest.issues.createComment({
             owner,
