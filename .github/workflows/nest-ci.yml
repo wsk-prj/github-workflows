@@ -30,17 +30,17 @@ jobs:
         run: npm run lint
 
       # 테스트 실행
-      - name: Rrun test
+      - name: Run test
         run: npm run test
 
       # DockerHub 로그인
       - name: Docker login
         run: |
-          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | sudo -E docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       # Docker-Compose 빌드
       - name: Docker Compose Build
-        run: docker-compose -f docker/docker-compose.yml build
+        run: sudo -E docker compose -f docker/docker-compose.yml build
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
@@ -50,4 +50,4 @@ jobs:
 
       # Docker 이미지 푸시
       - name: Docker push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:main
+        run: sudo -E docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:main
