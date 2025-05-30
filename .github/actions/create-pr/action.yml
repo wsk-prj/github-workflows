@@ -54,27 +54,35 @@ runs:
             assignees: [issueAuthor]
           });
 
-          
-          // 코멘트 작성 전 대기
-          await new Promise(resolve => setTimeout(resolve, 10000));
-          
-          // 봇 코멘트 작성
+          console.log(`💬 Waiting for few seconds..`);
+          await new Promise(resolve => setTimeout(resolve, 5000));
+
+          // 봇 코멘트 작성(PR)
           console.log(`💬 Adding bot comment to PR #${pr.data.number}`);
+          const prBody = `Created PR for issue #${issueNumber} and assigned to @${issueAuthor}`;
           await github.rest.issues.createComment({
             owner,
             repo,
             issue_number: pr.data.number,
-            body: `Created PR for issue #${issueNumber} and assigned to @${issueAuthor}`
+            body: prBody
           });
           
-          // 봇 코멘트 작성
+          // 봇 코멘트 작성(issue)
           console.log(`💬 Adding bot comment to issue #${issueNumber}`);
           const branchUrl = `https://github.com/${owner}/${repo}/tree/${targetBranch}`;
+          const commentBody = [
+            `Created branch [${targetBranch}](${branchUrl}) for this issue and assigned to @${issueAuthor}`,
+            "```bash",
+            `git fetch origin`,
+            `git checkout ${targetBranch}`,
+            "",
+            "```"
+          ].join("\n");
           await github.rest.issues.createComment({
             owner,
             repo,
             issue_number: issueNumber,
-            body: `Created branch [${targetBranch}](${branchUrl}) for this issue and assigned to @${issueAuthor}`
+            body: commentBody
           });
 
           console.log(`✅ Created PR #${pr.data.number} and assigned @${issueAuthor}`);
