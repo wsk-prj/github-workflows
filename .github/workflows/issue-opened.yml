@@ -5,11 +5,6 @@ on:
   issues:
     types: [opened]
 
-permissions:
-  contents: write
-  issues: write
-  pull-requests: write
-
 jobs:
   # assignee 등록
   assign-author:
@@ -25,6 +20,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
     outputs:
       branch-name: ${{ steps.create-branch.outputs.branch-name }}
     steps:
