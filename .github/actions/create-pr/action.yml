@@ -9,6 +9,9 @@ inputs:
   branch-name:
     description: 'Target branch name (e.g., issue/123, feat/login)'
     required: true
+  base-branch:
+    description: 'Base branch'
+    required: true
   github-token:
     description: 'GitHub token'
     required: true
@@ -26,6 +29,7 @@ runs:
           const issueTitle = context.payload.issue.title;
           const issueAuthor = context.payload.issue.user.login;
           const targetBranch = '${{ inputs.branch-name }}';
+          const baseBranch = '${{ inputs.base-branch }}';
           const owner = context.repo.owner;
           const repo = context.repo.repo;
 
@@ -36,7 +40,7 @@ runs:
             repo,
             title: `${issueTitle}`,
             head: targetBranch,
-            base: 'develop',
+            base: baseBranch,
             body: `Closes #${issueNumber}`,
             draft: true
           });

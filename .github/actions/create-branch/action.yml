@@ -4,6 +4,9 @@ permissions:
   contents: write
 
 inputs:
+  base-branch:
+    description: 'Base branch'
+    required: true
   branch-prefix:
     description: 'Branch prefix (e.g., issue, feat, fix)'
     required: true
@@ -17,20 +20,20 @@ outputs:
 runs:
   using: composite
   steps:
-    - name: Create branch from develop
+    - name: Create branch from base branch
       id: create-branch
       uses: actions/github-script@v7
       with:
         script: |
           const issueNumber = context.payload.issue.number;
           const issueAuthor = context.payload.issue.user.login;
-          const baseBranch = 'develop';
+          const baseBranch = '${{ inputs.base-branch }}';
           const prefix = '${{ inputs.branch-prefix }}';
           const targetBranch = `${prefix}/${issueNumber}`;
           const owner = context.repo.owner;
           const repo = context.repo.repo;
 
-          // develop 브랜치에서 커밋 SHA 가져오기
+          // 기본 브랜치에서 커밋 SHA 가져오기
           console.log(`🔍 Getting commit SHA for ${baseBranch} branch`);
           const base = await github.rest.repos.getBranch({
             owner,
@@ -56,7 +59,7 @@ runs:
             }
           }
 
-          // develop 커밋의 트리 SHA 가져오기
+          // 기본 브랜치의 트리 SHA 가져오기
           console.log(`🔍 Getting tree SHA for ${baseBranch} branch`);
           const baseCommit = await github.rest.git.getCommit({
             owner,
