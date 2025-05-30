@@ -1,4 +1,4 @@
-name: nest.js - CI
+name: CI (nest.js)
 
 on:
   pull_request:

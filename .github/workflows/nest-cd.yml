@@ -1,4 +1,4 @@
-name: nest.js - CD
+name: CD (nest.js)
 
 on:
   push:
