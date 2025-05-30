@@ -20,12 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+    outputs:
+      branch-name: ${{ steps.create-branch.outputs.branch-name }}
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/create-branch
+      - id: create-branch
+        uses: ./.github/actions/create-branch
 
   # 풀 리퀘스트 생성
   create-pull-request:
+    needs: create-branch
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -33,3 +37,5 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/create-pr
+        with:
+          branch-name: ${{ needs.create-branch.outputs.branch-name }}
