@@ -1,0 +1,41 @@
+name: Issue opened actions
+
+# 트리거: 이슈 생성
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  # assignee 등록
+  assign-author:
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/assign-author
+
+  # 브랜치 생성
+  create-branch:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    outputs:
+      branch-name: ${{ steps.create-branch.outputs.branch-name }}
+    steps:
+      - uses: actions/checkout@v4
+      - id: create-branch
+        uses: ./.github/actions/create-branch
+
+  # 풀 리퀘스트 생성
+  create-pull-request:
+    needs: create-branch
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/create-pr
+        with:
+          branch-name: ${{ needs.create-branch.outputs.branch-name }}

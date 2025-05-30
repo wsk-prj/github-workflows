@@ -1,5 +1,10 @@
 name: Create pull request
 
+inputs:
+  branch-name:
+    description: 'Target branch name (e.g., issue/123, feat/login)'
+    required: true
+
 runs:
   using: composite
   steps:
@@ -9,10 +14,12 @@ runs:
         script: |
           const issueNumber = context.payload.issue.number;
           const issueTitle = context.payload.issue.title;
-          const targetBranch = `issue/${issueNumber}`;
+          const targetBranch = '${{ inputs.branch-name }}';
           const owner = context.repo.owner;
           const repo = context.repo.repo;
 
+          // PR 생성
+          console.log(`📝 Creating PR for issue #${issueNumber} from branch ${targetBranch}`);
           await github.rest.pulls.create({
             owner,
             repo,
@@ -22,3 +29,5 @@ runs:
             body: `Closes #${issueNumber}`,
             draft: true
           });
+
+          console.log(`✅ Created PR for issue #${issueNumber}`);

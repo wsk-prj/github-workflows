@@ -10,10 +10,12 @@ runs:
           const issueNumber = context.payload.issue.number;
           const issueAuthor = context.payload.issue.user.login;
 
-          console.log(`Assigning @${issueAuthor} to issue#${issueNumber}`);
-
+          // 이슈에 작성자 할당
+          console.log(`📝 Assigning @${issueAuthor} to issue#${issueNumber}`);
           await github.rest.issues.addAssignees({
             ...context.repo,
             issue_number: issueNumber,
             assignees: [issueAuthor]
           });
+
+          console.log(`✅ Assigned @${issueAuthor} to issue#${issueNumber}`);

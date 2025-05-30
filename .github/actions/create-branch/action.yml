@@ -1,19 +1,33 @@
 name: Create branch from issue
 
+inputs:
+  branch-prefix:
+    description: 'Branch prefix (e.g., issue, feat, fix)'
+    required: true
+    default: 'issue'
+
+outputs:
+  branch-name:
+    description: 'Created branch name'
+    value: ${{ steps.create-branch.outputs.branch-name }}
+
 runs:
   using: composite
   steps:
     - name: Create branch from develop
+      id: create-branch
       uses: actions/github-script@v7
       with:
         script: |
           const issueNumber = context.payload.issue.number;
           const baseBranch = 'develop';
-          const targetBranch = `issue/${issueNumber}`;
+          const prefix = '${{ inputs.branch-prefix }}';
+          const targetBranch = `${prefix}/${issueNumber}`;
           const owner = context.repo.owner;
           const repo = context.repo.repo;
 
           // develop 브랜치에서 커밋 SHA 가져오기
+          console.log(`🔍 Getting commit SHA for ${baseBranch} branch`);
           const base = await github.rest.repos.getBranch({
             owner,
             repo,
@@ -22,6 +36,7 @@ runs:
           const baseSha = base.data.commit.sha;
 
           // 브랜치 생성
+          console.log(`📝 Creating branch ${targetBranch}`);
           try {
             await github.rest.git.createRef({
               owner,
@@ -31,13 +46,14 @@ runs:
             });
           } catch (err) {
             if (err.status === 422) {
-              console.log('Branch already exists. Skipping.');
+              console.log('⚠️ Branch already exists. Skipping.');
             } else {
               throw err;
             }
           }
 
           // develop 커밋의 트리 SHA 가져오기
+          console.log(`🔍 Getting tree SHA for ${baseBranch} branch`);
           const baseCommit = await github.rest.git.getCommit({
             owner,
             repo,
@@ -46,6 +62,7 @@ runs:
           const treeSha = baseCommit.data.tree.sha;
 
           // 빈 커밋 생성
+          console.log(`📝 Creating empty commit for ${targetBranch}`);
           const emptyCommit = await github.rest.git.createCommit({
             owner,
             repo,
@@ -55,6 +72,7 @@ runs:
           });
 
           // 브랜치 업데이트
+          console.log(`🔄 Updating branch ${targetBranch}`);
           await github.rest.git.updateRef({
             owner,
             repo,
@@ -62,3 +80,8 @@ runs:
             sha: emptyCommit.data.sha,
             force: false,
           });
+
+          console.log(`✅ Created branch ${targetBranch}`);
+          
+          // 브랜치 이름을 출력으로 설정
+          core.setOutput('branch-name', targetBranch);
