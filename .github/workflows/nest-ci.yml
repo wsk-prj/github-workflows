@@ -36,7 +36,7 @@ jobs:
       # DockerHub 로그인
       - name: Docker login
         run: |
-          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | sudo docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+          echo "${{ secrets.DOCKERHUB_PASSWORD }}" | sudo -E docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
       # Docker-Compose 빌드
       - name: Docker Compose Build
