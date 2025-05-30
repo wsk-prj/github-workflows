@@ -55,6 +55,9 @@ runs:
           });
 
           
+          // 코멘트 작성 전 대기
+          await new Promise(resolve => setTimeout(resolve, 10000));
+          
           // 봇 코멘트 작성
           console.log(`💬 Adding bot comment to PR #${pr.data.number}`);
           await github.rest.issues.createComment({
