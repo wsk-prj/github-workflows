@@ -30,7 +30,7 @@ jobs:
         run: npm run lint
 
       # 테스트 실행
-      - name: Rrun test
+      - name: Run test
         run: npm run test
 
       # DockerHub 로그인
