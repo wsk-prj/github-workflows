@@ -7,5 +7,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
-// 소스 수정

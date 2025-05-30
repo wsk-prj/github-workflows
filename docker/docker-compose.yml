@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   app:
-    image: ${DOCKERHUB_USERNAME}/${APP_NAME}:dev
+    image: ${DOCKERHUB_USERNAME}/${APP_NAME}:main
     build:
       context: ../
       dockerfile: Dockerfile

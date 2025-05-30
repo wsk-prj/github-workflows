@@ -2,33 +2,45 @@ name: CI (nest.js)
 
 on:
   pull_request:
-    branches: ["main"]
+    branches: ['main']
     paths:
-      - ".github/workflows/ci.yml"
-      - "src/**"
-      - "test/**"
-      - "Dockerfile"
-      - "package.json"
-      - "package-lock.json"
-      - "docker/docker-compose.yml"
+      - '.github/workflows/ci.yml'
+      - 'src/**'
+      - 'test/**'
+      - 'Dockerfile'
+      - 'package.json'
+      - 'package-lock.json'
+      - 'docker/docker-compose.yml'
   workflow_dispatch:
 
 jobs:
   build-and-push-image:
-    runs-on: [self-hosted, oci, dev] # Actions Runner
+    runs-on: [self-hosted, aws, nest, main] # Actions Runner
     steps:
-      # 1. 체크아웃
+      # 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2. DockerHub 로그인
+      # 의존성 설치
+      - name: Install dependencies
+        run: npm ci
+
+      # Lint 실행
+      - name: Check lint rules
+        run: npm run lint
+
+      # 테스트 실행
+      - name: Rrun test
+        run: npm run test
+
+      # DockerHub 로그인
       - name: Docker login
         run: |
           echo "${{ secrets.DOCKERHUB_PASSWORD }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      # 3. docker-compose 빌드
+      # Docker-Compose 빌드
       - name: Docker Compose Build
-        run: docker-compose -f docker/docker-compose.dev.yml build
+        run: docker-compose -f docker/docker-compose.yml build
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
@@ -36,6 +48,6 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
 
-      # 4. Docker 이미지 푸시
+      # Docker 이미지 푸시
       - name: Docker push
-        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:dev
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:main
