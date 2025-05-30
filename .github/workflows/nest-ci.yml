@@ -40,7 +40,7 @@ jobs:
 
       # Docker-Compose 빌드
       - name: Docker Compose Build
-        run: sudo docker compose -f docker/docker-compose.yml build
+        run: sudo -E docker compose -f docker/docker-compose.yml build
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
@@ -50,4 +50,4 @@ jobs:
 
       # Docker 이미지 푸시
       - name: Docker push
-        run: sudo docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:main
+        run: sudo -E docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ github.event.repository.name }}:main
