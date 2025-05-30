@@ -14,13 +14,14 @@ runs:
         script: |
           const issueNumber = context.payload.issue.number;
           const issueTitle = context.payload.issue.title;
+          const issueAuthor = context.payload.issue.user.login;
           const targetBranch = '${{ inputs.branch-name }}';
           const owner = context.repo.owner;
           const repo = context.repo.repo;
 
           // PR 생성
           console.log(`📝 Creating PR for issue #${issueNumber} from branch ${targetBranch}`);
-          await github.rest.pulls.create({
+          const pr = await github.rest.pulls.create({
             owner,
             repo,
             title: `${issueTitle}`,
@@ -30,4 +31,13 @@ runs:
             draft: true
           });
 
-          console.log(`✅ Created PR for issue #${issueNumber}`);
+          // PR에 assignee 할당
+          console.log(`👤 Assigning @${issueAuthor} to PR #${pr.data.number}`);
+          await github.rest.issues.addAssignees({
+            owner,
+            repo,
+            issue_number: pr.data.number,
+            assignees: [issueAuthor]
+          });
+
+          console.log(`✅ Created PR #${pr.data.number} and assigned @${issueAuthor}`);
