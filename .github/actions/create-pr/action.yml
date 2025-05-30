@@ -54,17 +54,25 @@ runs:
             assignees: [issueAuthor]
           });
 
-          
-          // 코멘트 작성 전 대기
-          await new Promise(resolve => setTimeout(resolve, 10000));
-          
+          console.log(`💬 Waiting for few seconds..`);
+          await new Promise(resolve => setTimeout(resolve, 5000));
+
           // 봇 코멘트 작성
           console.log(`💬 Adding bot comment to PR #${pr.data.number}`);
+          const body = [`Created PR for issue #${issueNumber} and assigned to @${issueAuthor} `, 
+            "",
+            "````",
+            `git fetch origin`,
+            `git checkout ${targetBranch}`,
+            "",
+            "````"
+          ].join("\n");
+          console.log(body);
           await github.rest.issues.createComment({
             owner,
             repo,
             issue_number: pr.data.number,
-            body: `Created PR for issue #${issueNumber} and assigned to @${issueAuthor}`
+            body: body
           });
           
           // 봇 코멘트 작성
