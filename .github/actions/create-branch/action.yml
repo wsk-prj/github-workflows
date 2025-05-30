@@ -20,6 +20,7 @@ runs:
       with:
         script: |
           const issueNumber = context.payload.issue.number;
+          const issueAuthor = context.payload.issue.user.login;
           const baseBranch = 'develop';
           const prefix = '${{ inputs.branch-prefix }}';
           const targetBranch = `${prefix}/${issueNumber}`;
@@ -81,7 +82,16 @@ runs:
             force: false,
           });
 
+          // 봇 코멘트 작성
+          console.log(`💬 Adding bot comment to issue #${issueNumber}`);
+          await github.rest.issues.createComment({
+            owner,
+            repo,
+            issue_number: issueNumber,
+            body: `Created branch ${targetBranch} for this issue and assigned to @${issueAuthor}`
+          });
+
           console.log(`✅ Created branch ${targetBranch}`);
           
-          // 브랜치 이름을 출력으로 설정
+          // 생성된 브랜치명 출력
           core.setOutput('branch-name', targetBranch);
