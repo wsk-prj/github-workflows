@@ -40,7 +40,7 @@ jobs:
 
       # Docker-Compose 빌드
       - name: Docker Compose Build
-        run: docker-compose -f docker/docker-compose.yml build
+        run: docker compose -f docker/docker-compose.yml build
         env:
           DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
           APP_NAME: ${{ github.event.repository.name }}
