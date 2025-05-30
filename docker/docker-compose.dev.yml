@@ -15,6 +15,8 @@ services:
       - app-net
     ports:
       - '3000:3000'
+    volumes:
+      - app-logs:/app/logs
     restart: unless-stopped
 
   postgresql:
@@ -38,3 +40,4 @@ networks:
 
 volumes:
   app-data:
+  app-logs:
