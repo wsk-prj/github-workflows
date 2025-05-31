@@ -1,0 +1,19 @@
+name: Pull request merged actions
+
+# 트리거: 풀 리퀘스트 병합
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  # 병합이 완료된 브랜치 삭제
+  delete-merged-branch:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/delete-merged-branch
+        with:
+          protected-branches: main

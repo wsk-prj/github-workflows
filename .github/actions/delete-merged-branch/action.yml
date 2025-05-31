@@ -1,0 +1,34 @@
+name: Delete merged branch
+
+inputs:
+  protected-branches:
+    description: 'Comma separated protected branches (e.g., main,dev)'
+    required: true
+    default: 'main'
+
+runs:
+  using: composite
+  steps:
+    - name: Delete merged branch
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const owner = context.repo.owner;
+          const repo = context.repo.repo;
+          const targetBranch = context.payload.pull_request.head.ref;
+
+          // 보호된 브랜치는 삭제하지 않음
+          const protectedBranches = '${{ inputs.protected-branches }}';
+          if (protectedBranches.includes(targetBranch)) {
+            console.log(`🛡️ Branch ${targetBranch} is protected. Skipping delete.`);
+            return;
+          }
+
+          // 브랜치 제거
+          await github.rest.git.deleteRef({
+            owner,
+            repo,
+            ref: `heads/${targetBranch}`
+          });
+
+          console.log(`✅ Deleted merged branch: ${targetBranch}`);
