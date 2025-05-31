@@ -10,7 +10,7 @@ body:
   - type: textarea
     id: summary
     attributes:
-      label: 📌 어떤 기능을 구현하나요? (필수)
+      label: 📌 어떤 기능을 구현하나요?
       description: 기능의 목적과 필요성을 3줄 이내로 간결하게 설명해주세요.
       placeholder: |
         예시:
@@ -21,7 +21,7 @@ body:
   - type: textarea
     id: details
     attributes:
-      label: 📜 구현 상세 내용 (필수)
+      label: 📜 구현 상세 내용
       description: 기능 구현을 위해 필요한 구체적인 작업 항목을 나열해주세요.
       placeholder: |
         예시:
@@ -32,7 +32,7 @@ body:
   - type: textarea
     id: estimate
     attributes:
-      label: ⏳ 예상 소요 시간 (선택)
+      label: ⏳ 예상 소요 시간
       description: 예상 소요 시간을 대략적으로 입력해주세요.
       placeholder: |
         예시:
@@ -44,7 +44,7 @@ body:
   - type: textarea
     id: references
     attributes:
-      label: 🔍 참고할만한 자료 (선택)
+      label: 🔍 참고할만한 자료
       description: 참고할만한 코드, 관련 문서 등을 자유롭게 추가하세요.
       placeholder: |
         예시:

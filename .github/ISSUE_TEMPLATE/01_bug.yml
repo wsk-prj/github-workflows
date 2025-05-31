@@ -9,7 +9,7 @@ body:
   - type: textarea
     id: bug-description
     attributes:
-      label: 📌 어떤 버그인가요? (필수)
+      label: 📌 어떤 버그인가요?
       description: |
         버그의 증상을 3줄 이내로 간결하게 설명해주세요.
         버그 발생 조건을 알려주세요. 정상 동작은 무엇이고, 현재 어떻게 동작하나요?
@@ -24,7 +24,7 @@ body:
     id: environment
     attributes:
       label: 💻 발생 환경
-      description: 버그가 발생하는 환경을 작성해주세요. (필수)
+      description: 버그가 발생하는 환경을 작성해주세요.
       placeholder: |
         - iPhone 15 / Galaxy Note 20
         - iOS 17.1 / Android 15
@@ -35,7 +35,7 @@ body:
   - type: textarea
     id: steps
     attributes:
-      label: 🔁 재현 단계 (필수)
+      label: 🔁 재현 단계
       description: 버그가 발생한 과정을 단계별로 작성해주세요.
       placeholder: |
         예시:
@@ -49,7 +49,7 @@ body:
   - type: dropdown
     id: severity
     attributes:
-      label: 🚨 심각도 (필수)
+      label: 🚨 심각도
       description: 해당 버그가 시스템에 미칠 수 있는 영향 수준을 선택해주세요.
       options:
         - (심각도를 선택해주세요)
@@ -63,7 +63,7 @@ body:
   - type: textarea
     id: references
     attributes:
-      label: 🔍 참고할만한 자료 (선택)
+      label: 🔍 참고할만한 자료
       description: 참고할만한 코드, 재현 방법, 로그, 관련 이슈 등을 자유롭게 추가하세요.
       placeholder: |
         예시:
