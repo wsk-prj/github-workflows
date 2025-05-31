@@ -8,4 +8,4 @@ async function bootstrap() {
 
 bootstrap();
 
-// 코드 수정
+// 소스코드 수정

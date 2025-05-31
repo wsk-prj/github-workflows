@@ -1,5 +1,8 @@
 name: Delete merged branch
 
+permissions:
+  contents: write
+
 inputs:
   protected-branches:
     description: 'Comma separated protected branches (e.g., main,dev)'
