@@ -11,6 +11,10 @@ inputs:
     description: 'Branch prefix (e.g., issue, feat, fix)'
     required: true
     default: 'issue'
+  ignored-issues:
+    description: 'Comma-separated ignored issue types (e.g., bug,docs)'
+    required: false
+    default: 'bug,docs'
 
 outputs:
   branch-name:
@@ -26,6 +30,19 @@ runs:
       with:
         script: |
           const issueNumber = context.payload.issue.number;
+          const issueTitle = context.payload.issue.title;
+
+          // 스킵 조건 확인
+          const ignoredList = '${{ inputs.ignored-issues || "" }}'
+            .split(',')
+            .map(x => x.trim().toLowerCase());
+          const isIgnored = ignoredList.some(keyword => issueTitle.includes(keyword));
+          if (isIgnored) {
+            console.log(`⛔ Issue title contains ignored keyword. Skipping branch creation.`);
+            core.setOutput('branch-name', '');
+            return;
+          }
+
           const issueAuthor = context.payload.issue.user.login;
           const baseBranch = '${{ inputs.base-branch }}';
           const prefix = '${{ inputs.branch-prefix }}';

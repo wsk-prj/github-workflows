@@ -23,12 +23,14 @@ jobs:
       - id: create-branch
         uses: ./.github/actions/create-branch
         with:
-          base-branch: main     # 베이스 브랜치
-          branch-prefix: issue  # 브랜치 접두사
+          base-branch: main          # 베이스 브랜치
+          branch-prefix: issue       # 브랜치 접두사
+          ignored-issues: 'bug,docs' # 무시할 이슈 타입
 
   # 풀 리퀘스트 생성
   create-pull-request:
     needs: create-branch
+    if: needs.create-branch.outputs.branch-name != ''
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
