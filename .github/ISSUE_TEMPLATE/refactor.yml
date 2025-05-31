@@ -1,0 +1,53 @@
+name: '♻️ 리팩터링'
+description: '기존 코드를 구조적으로 개선하거나, 중복 제거 작업'
+title: '[REFACTOR] '
+labels:
+  - 'Type: Refactor :recycle:'
+  - 'Needs-Triage :mag:'
+assignees: []
+
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 📌 어떤 기능을 리팩터링 하나요? (필수)
+      description: 리팩터링 대상과 이유를 간결하게 설명해주세요.
+      placeholder: |
+        예시:
+        - 코드 중복을 줄이고 유지보수성을 높이기 위해 회원 도메인을 리팩터링한다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 📜 리팩터링 상세 내용 (필수)
+      description: 리팩터링을 위해 필요한 작업 항목을 나열해주세요.
+      placeholder: |
+        예시:
+        - 회원 조회 로직을 별도 모듈로 추출한다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: estimate
+    attributes:
+      label: ⏳ 예상 소요 시간 (선택)
+      description: 예상 소요 시간을 대략적으로 입력해주세요.
+      placeholder: |
+        예시:
+        - 4H
+        - 16H ~ 24H
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔍 참고할만한 자료 (선택)
+      description: 참고할만한 코드, 관련 문서 등을 자유롭게 추가하세요.
+      placeholder: |
+        예시:
+        - [회원 도메인 설계](https://...)
+    validations:
+      required: false

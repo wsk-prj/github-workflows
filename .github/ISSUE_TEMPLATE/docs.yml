@@ -1,0 +1,54 @@
+name: '📝 문서 작성'
+description: '기능 설명, API 명세, 개발 가이드 등의 문서 작성'
+title: '[DOCS] '
+labels:
+  - 'Documentation :memo:'
+assignees: []
+
+body:
+  - type: textarea
+    id: doc-purpose
+    attributes:
+      label: 📌 어떤 문서를 작성하나요? (필수)
+      description: 문서의 종류와 목적을 간결하게 설명해주세요. 이 문서가 왜 필요한가요? 어떤 개발 흐름에 도움이 되나요?
+      placeholder: |
+        예시:
+        - 클라이언트-서버 API 연동을 위해 API 구조를 정의한다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-location
+    attributes:
+      label: 📂 문서 작성 위치 (필수)
+      description: 이 문서는 어디에 작성되나요? (링크 또는 시스템 내 위치)
+      placeholder: |
+        예시:
+        - [Notion](https://...)
+        - [Wiki](https://...)
+    validations:
+      required: true
+
+  - type: textarea
+    id: doc-details
+    attributes:
+      label: 📜 문서 작성 상세 내용 (필수)
+      description: 문서에 포함되어야 할 항목들을 구체적으로 나열해주세요.
+      placeholder: |
+        예시:
+        - 백엔드 API 기본 형식 설정
+        - 응답 코드 정의
+        - 인증 방식 명시
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔍 참고할만한 자료 (선택)
+      description: 관련 문서, 외부 링크, 이전 이슈 등을 자유롭게 추가하세요.
+      placeholder: |
+        예시:
+        - [스프링부트 @RestController 설계](https://...)
+    validations:
+      required: false

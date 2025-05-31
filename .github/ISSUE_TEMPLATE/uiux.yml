@@ -1,0 +1,53 @@
+name: '🎨 UI/UX'
+description: '사용자 인터페이스(UI) 및 사용자 경험(UX) 개선 작업'
+title: '[UI/UX] '
+labels:
+  - 'Type: UI/UX :art:'
+  - 'Needs-Triage :mag:'
+assignees: []
+
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: 📌 어떤 UI/UX를 개선하나요? (필수)
+      description: 변경하려는 UI/UX와 그 이유를 3줄 이내로 간결하게 설명해주세요.
+      placeholder: |
+        예시:
+        - 모바일 환경에서 메인 메뉴 버튼들이 작아 터치가 어렵다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: details
+    attributes:
+      label: 📜 개선 상세 내용 (필수)
+      description: 이 개선을 위해 필요한 구체적인 작업 목록을 나열해주세요.
+      placeholder: |
+        예시:
+        - 버튼 터치 영역을 늘리기 위해 <a> 태그의 padding을 조정한다.
+    validations:
+      required: true
+
+  - type: textarea
+    id: estimate
+    attributes:
+      label: ⏳ 예상 소요 시간 (선택)
+      description: 예상 소요 시간을 대략적으로 입력해주세요.
+      placeholder: |
+        예시:
+        - 4H
+        - 16H ~ 24H
+    validations:
+      required: false
+
+  - type: textarea
+    id: references
+    attributes:
+      label: 🔍 참고할만한 자료 (선택)
+      description: 디자인 레퍼런스, 관련 문서 등을 자유롭게 추가하세요.
+      placeholder: |
+        예시:
+        - [모바일 웹 디자인](https://...)
+    validations:
+      required: false
