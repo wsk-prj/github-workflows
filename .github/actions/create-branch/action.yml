@@ -36,7 +36,7 @@ runs:
           const ignoredList = '${{ inputs.ignored-issues || "" }}'
             .split(',')
             .map(x => x.trim().toLowerCase());
-          const isIgnored = ignoredList.some(keyword => issueTitle.includes(keyword));
+          const isIgnored = ignoredList.some(keyword => issueTitle.toLowerCase().includes(keyword));
           if (isIgnored) {
             console.log(`⛔ Issue title contains ignored keyword. Skipping branch creation.`);
             core.setOutput('branch-name', '');
