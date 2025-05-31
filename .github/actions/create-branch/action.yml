@@ -33,7 +33,7 @@ runs:
           const issueTitle = context.payload.issue.title;
 
           // 스킵 조건 확인
-          const ignoredList = '${{ inputs.ignored-issues || "" }}'
+          const ignoredList = '${{ inputs.ignored-issues }}'
             .split(',')
             .map(x => x.trim().toLowerCase());
           const isIgnored = ignoredList.some(keyword => issueTitle.toLowerCase().includes(keyword));
